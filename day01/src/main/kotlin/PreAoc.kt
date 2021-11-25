@@ -41,8 +41,8 @@ private fun primes(integers: List<Int>): Set<Int> {
 }
 
 private fun detectPrimesRecursive(primeFlags: MutableList<Boolean>, lastPrime: Int? = null): Set<Int> {
-    val dropCount = lastPrime?.minus(1) ?: 0
-    val nextPrime = primeFlags.drop(dropCount).indexOfFirst { it }.let { if (it >= 0) it + dropCount + 2 else null }
+    val offset = lastPrime?.minus(1) ?: 0
+    val nextPrime = primeFlags.drop(offset).indexOfFirst { it }.let { if (it >= 0) it + offset + 2 else null }
     return nextPrime?.run {
         val maxNumber = primeFlags.size + 1
         (nextPrime..maxNumber step nextPrime).drop(1).forEach { primeFlags[it - 2] = false }
