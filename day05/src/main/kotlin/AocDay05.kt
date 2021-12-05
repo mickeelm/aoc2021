@@ -19,7 +19,7 @@ fun solutionPart2(input: List<String>) = solve(input) {
             abs(it.first.x - it.second.x) == abs(it.first.y - it.second.y)
 }
 
-fun solve(input: List<String>, ventCoordinatesFilter: (Pair<Coordinates, Coordinates>) -> Boolean) =
+private fun solve(input: List<String>, ventCoordinatesFilter: (Pair<Coordinates, Coordinates>) -> Boolean) =
     input.map { it.ventCoordinates() }
         .filter { ventCoordinatesFilter.invoke(it) }
         .flatMap { it.asVentLine() }
