@@ -28,18 +28,10 @@ private fun lowPoints(numbers: List<List<Int>>): Map<Coordinates, Int> {
         for (col in 0 until cols) {
             val number = numbers[row][col]
             if (number == 9) continue
-            if (row > 0) {
-                if (numbers[row - 1][col] <= number) continue
-            }
-            if (col > 0) {
-                if (numbers[row][col - 1] <= number) continue
-            }
-            if (row < rows - 1) {
-                if (numbers[row + 1][col] <= number) continue
-            }
-            if (col < cols - 1) {
-                if (numbers[row][col + 1] <= number) continue
-            }
+            if (row > 0 && numbers[row - 1][col] <= number) continue
+            if (col > 0 && numbers[row][col - 1] <= number) continue
+            if (row < rows - 1 && numbers[row + 1][col] <= number) continue
+            if (col < cols - 1 && numbers[row][col + 1] <= number) continue
             lowPoints[Coordinates(row, col)] = number + 1
         }
     }
