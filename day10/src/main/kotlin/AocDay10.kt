@@ -15,18 +15,17 @@ val pairs = openers.zip(closers).toMap()
 val syntaxErrorScores = closers.zip(listOf(3, 57, 1197, 25137)).toMap()
 val autoCompleteScores = closers.zip(1L..4L).toMap()
 
-fun solutionPart1(input: List<String>) = input.sumOf { syntaxErrorScore(it) }
+fun solutionPart1(input: List<String>) = input.sumOfNotNull { syntaxErrorScore(it) }
 fun solutionPart2(input: List<String>) = input.medianOfNotNull { autoCompleteScore(it) }
 
-fun syntaxErrorScore(line: String): Int {
+fun syntaxErrorScore(line: String): Int? =
     ArrayDeque<Char>().apply {
         line.forEach { char ->
             if (char in openers) add(char) else removeLast()
-                .also { if (char != pairs[it]) return syntaxErrorScores.getValue(char) }
+                .also { if (char != pairs[it]) return syntaxErrorScores[char] }
         }
-    }
-    return 0
-}
+    }.let { null }
+
 
 fun autoCompleteScore(line: String): Long? =
     ArrayDeque<Char>().apply {
@@ -38,5 +37,6 @@ fun autoCompleteScore(line: String): Long? =
         .map { autoCompleteScores.getValue(pairs.getValue(it)) }
         .reduce { score, next -> score * 5 + next }
 
+private fun List<String>.sumOfNotNull(selector: (String) -> Int?) = mapNotNull(selector).sum()
 private fun List<String>.medianOfNotNull(selector: (String) -> Long?) =
     mapNotNull(selector).sorted().let { it[it.size / 2] }
