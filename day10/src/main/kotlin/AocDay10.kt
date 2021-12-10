@@ -26,7 +26,6 @@ fun syntaxErrorScore(line: String): Int? =
         }
     }.let { null }
 
-
 fun autoCompleteScore(line: String): Long? =
     ArrayDeque<Char>().apply {
         line.forEach { char ->
