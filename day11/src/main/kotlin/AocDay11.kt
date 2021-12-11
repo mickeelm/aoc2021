@@ -44,6 +44,6 @@ fun Grid.flash(flashCoordinates: Set<Coordinates>) =
         (it.row-1..it.row+1).forEach { row -> (it.col-1..it.col+1).forEach { col -> increase(Coordinates(row,col)) } }
     }
 
-fun Grid.increaseAll() = forEach { put(it.key, it.value + 1) }
-fun Grid.flashReady() = filterValues { it > 9 }.keys
 fun Grid.increase(coordinates: Coordinates) = get(coordinates)?.let { put(coordinates, it + 1) }
+fun Grid.increaseAll() = forEach { increase(it.key) }
+fun Grid.flashReady() = filterValues { it > 9 }.keys
