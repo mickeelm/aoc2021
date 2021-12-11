@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class AocDay06Test {
+internal class AocDay08Test {
 
     private val smallExampleInput =
         listOf("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf")

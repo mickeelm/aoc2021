@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class AocDay06Test {
+internal class AocDay07Test {
 
     private val exampleInput = "16,1,2,0,4,2,7,1,2,14"
 

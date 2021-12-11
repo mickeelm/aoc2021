@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class AocDay06Test {
+internal class AocDay09Test {
 
     private val exampleInput = listOf(
         "2199943210",
