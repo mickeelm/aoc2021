@@ -19,12 +19,13 @@ fun solutionPart1(input: List<String>) = input.sumOfNotNull { syntaxErrorScore(i
 fun solutionPart2(input: List<String>) = input.medianOfNotNull { autoCompleteScore(it) }
 
 fun syntaxErrorScore(line: String): Int? =
-    ArrayDeque<Char>().apply {
+    ArrayDeque<Char>().run {
         line.forEach { char ->
             if (char in openers) add(char) else removeLast()
                 .also { if (char != pairs[it]) return syntaxErrorScores[char] }
         }
-    }.let { null }
+        null
+    }
 
 fun autoCompleteScore(line: String): Long? =
     ArrayDeque<Char>().apply {
