@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class AocDay06Test {
+internal class AocDay10Test {
 
     private val exampleInput = listOf(
         "[({(<(())[]>[[{[]{<()<>>",
