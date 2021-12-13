@@ -8,38 +8,39 @@ fun main() {
     }
 }
 
+data class Coordinate(val x: Int, val y: Int)
 data class Instruction(val direction: Char, val line: Int)
 
-fun solutionPart1(input: List<String>) =
-    parse(input).let { solve(it.second.coordinates(), listOf(it.first.first()).instructions()) }.count()
+fun parse(input: List<String>) = input.filter { it.isNotBlank() }.partition { it.startsWith("fold") }.let {
+    it.second.coordinates() to it.first.instructions()
+}
 
-fun solutionPart2(input: List<String>) =
-    parse(input).let { solve(it.second.coordinates(), it.first.instructions()) }.print()
-
-fun parse(input: List<String>) = input.filter { it.isNotBlank() }.partition { it.startsWith("fold") }
-
-fun solve(coordinates: Set<Pair<Int, Int>>, instructions: List<Instruction>) =
-        instructions.fold(coordinates) { coord, instr -> coord.foldPaper(instr) }
-
-fun List<String>.coordinates() = map { it.split(',')[0].toInt() to it.split(',')[1].toInt() }.toSet()
+fun List<String>.coordinates() = map { Coordinate(it.split(',')[0].toInt(), it.split(',')[1].toInt()) }.toSet()
 
 fun List<String>.instructions() =
     map { Instruction(it.split('=')[0].last(), it.split('=')[1].toInt()) }
 
-fun Set<Pair<Int, Int>>.foldPaper(instruction: Instruction) =
+
+fun solutionPart1(input: List<String>) = parse(input).let { solve(it.first, listOf(it.second.first())) }.count()
+fun solutionPart2(input: List<String>) = parse(input).let { solve(it.first, it.second) }.print()
+
+fun solve(coordinates: Set<Coordinate>, instructions: List<Instruction>) =
+    instructions.fold(coordinates) { coord, instr -> coord.foldPaper(instr) }
+
+fun Set<Coordinate>.foldPaper(instruction: Instruction) =
     if (instruction.direction == 'x') verticalFold(instruction) else horizontalFold(instruction)
 
-fun Set<Pair<Int, Int>>.horizontalFold(instruction: Instruction) =
-    filterNot { it.second == instruction.line }
-        .map { if (it.second > instruction.line) it.first to instruction.line - (it.second - instruction.line) else it }
+fun Set<Coordinate>.horizontalFold(instruction: Instruction) =
+    filterNot { it.y == instruction.line }
+        .map { if (it.y > instruction.line) Coordinate(it.x, instruction.line - (it.y - instruction.line)) else it }
         .toSet()
 
-fun Set<Pair<Int, Int>>.verticalFold(instruction: Instruction) =
-    filterNot { it.first == instruction.line }
-        .map { if (it.first > instruction.line) instruction.line - (it.first - instruction.line) to it.second else it }
+fun Set<Coordinate>.verticalFold(instruction: Instruction) =
+    filterNot { it.x == instruction.line }
+        .map { if (it.x > instruction.line) Coordinate(instruction.line - (it.x - instruction.line), it.y) else it }
         .toSet()
 
-fun Set<Pair<Int, Int>>.print() =
-    (0..this.maxOf { it.second }).map { y ->
-        (0..this.maxOf { it.first }).joinToString("") { x -> if (x to y in this) "███" else "   " }
+fun Set<Coordinate>.print() =
+    (0..this.maxOf { it.y }).map { y ->
+        (0..this.maxOf { it.x }).joinToString("") { x -> if (Coordinate(x, y) in this) "███" else "   " }
     }
