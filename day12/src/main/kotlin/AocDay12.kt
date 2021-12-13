@@ -9,10 +9,10 @@ fun main() {
     println(answer)
 }
 
-fun List<String>.caveConnections() = map { connection -> connection.split('-').let { it[0] to it[1] } }
-    .flatMap { listOf(it, Pair(it.second, it.first)) }
-    .groupBy { it.first }
-    .mapValues { entry -> entry.value.map { it.second }.filter { it != "start" }.toSet() }
+fun List<String>.caveConnections() =
+    flatMap { connection -> connection.split('-').zip(connection.split('-').reversed()) }
+        .groupBy { it.first }
+        .mapValues { entry -> entry.value.map { it.second }.filter { it != "start" }.toSet() }
 
 fun solutionPart1(input: List<String>) = input.caveConnections().countPaths("start")
 fun solutionPart2(input: List<String>) = input.caveConnections().countPaths("start", smallTwice = true)
