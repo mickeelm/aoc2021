@@ -12,7 +12,7 @@ fun main() {
 data class Input(val polymer: Polymer, val insertionRules: InsertionRules)
 data class CharCount(val char: Char, val count: Long)
 data class PairCount(val pair: String, val count: Long)
-data class Polymer(val pairCounts: List<PairCount>, val rightmostChar: Char)
+data class Polymer(val pairCounts: List<PairCount>, val lastChar: Char)
 typealias InsertionRules = Map<String, Set<String>>
 
 fun List<String>.parse() =
@@ -32,8 +32,8 @@ fun Input.solve(steps: Int) = (1..steps).fold(polymer) { pmr, _ -> pmr.step(inse
 fun Polymer.step(insertionRules: InsertionRules) =
     pairCounts.flatMap { pairCount -> insertionRules.getValue(pairCount.pair).map { PairCount(it, pairCount.count) } }
         .groupBy { it.pair }.map { entry -> PairCount(entry.key, entry.value.sumOf { it.count }) }
-        .let { Polymer(it, rightmostChar) }
+        .let { Polymer(it, lastChar) }
 
 fun Polymer.answer() = pairCounts.map { CharCount(it.pair.first(), it.count) }.groupBy { it.char }
-    .mapValues { cc -> cc.value.sumOf { it.count }.let { if (cc.key == rightmostChar) it + 1 else it } }.values.sorted()
+    .mapValues { cc -> cc.value.sumOf { it.count }.let { if (cc.key == lastChar) it + 1 else it } }.values.sorted()
     .let { it.last() - it.first() }
